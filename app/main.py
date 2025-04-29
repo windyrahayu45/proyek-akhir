@@ -54,7 +54,7 @@ if uploaded_file:
 elif manual_input:
     st.sidebar.subheader("📝 Input Data Manual")
 
-    with open('data_cleaned_columns.json', 'r') as f:
+    with open('data/data_cleaned_columns.json', 'r') as f:
         expected_columns = json.load(f)
 
     manual_data = {}

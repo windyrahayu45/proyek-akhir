@@ -5,75 +5,115 @@ import joblib
 import json
 import matplotlib.pyplot as plt
 
-# Judul
-st.set_page_config(page_title="Prediksi Attrition Mahasiswa", page_icon="🎓")
-st.title("🎓 Prediksi Attrition Mahasiswa - Jaya Jaya Institut")
-st.write("Upload data mahasiswa untuk memprediksi kemungkinan dropout berdasarkan model machine learning yang telah dilatih.")
+# --- Helper function ---
+def highlight_prediction(row):
+    color = ''
+    if row['Attrition_Prediction'] == 'Dropout':
+        color = 'background-color: #ffcccc'
+    elif row['Attrition_Prediction'] == 'Enrolled':
+        color = 'background-color: #ccffcc'
+    elif row['Attrition_Prediction'] == 'Graduate':
+        color = 'background-color: #ccccff'
+    return [color] * len(row)
 
-# Load model dan threshold
-try:
-    model = joblib.load('model/model_rf.pkl')
-    with open('model/thresholds.json', 'r') as f:
-        thresholds = json.load(f)
-    dropout_threshold = thresholds['dropout_threshold']
-    enrolled_threshold = thresholds['enrolled_threshold']
-except Exception as e:
-    st.error(f"❌ Gagal memuat model atau threshold: {e}")
-    st.stop()
+# --- Config ---
+st.set_page_config(page_title="Prediksi Attrition Mahasiswa", layout="wide")
 
-# Upload file
-uploaded_file = st.file_uploader("📤 Upload file CSV", type=["csv"])
+# --- Title ---
+st.title("🎓 Prediksi Attrition Mahasiswa - Jaya Jaya Institute")
+st.write("Upload data mahasiswa atau isi manual untuk memprediksi kemungkinan dropout.")
 
-if uploaded_file is not None:
+# --- Load Model and Thresholds ---
+with st.spinner('Loading model...'):
     try:
-        # Baca data
+        model = joblib.load('model/model_rf.pkl')
+        with open('model/thresholds.json', 'r') as f:
+            thresholds = json.load(f)
+        dropout_threshold = thresholds['dropout_threshold']
+        enrolled_threshold = thresholds['enrolled_threshold']
+    except Exception as e:
+        st.error(f"❌ Gagal memuat model atau threshold: {e}")
+        st.stop()
+
+# --- Sidebar ---
+st.sidebar.header("📂 Upload Data atau Isi Manual")
+uploaded_file = st.sidebar.file_uploader("Upload CSV", type=["csv"])
+manual_input = st.sidebar.checkbox("Atau Isi Data Manual")
+
+# --- Main ---
+data = None
+
+if uploaded_file:
+    try:
         data = pd.read_csv(uploaded_file)
-        st.subheader("📄 Data yang Diupload")
-        st.dataframe(data)
+        st.success("✅ Data CSV berhasil diupload!")
+    except Exception as e:
+        st.error(f"❌ Gagal membaca file CSV: {e}")
+        st.stop()
 
-        # Drop kolom 'status' kalau ada
-        if 'status' in data.columns:
-            X = data.drop(columns=['status'])
-        else:
-            X = data.copy()
+elif manual_input:
+    st.sidebar.subheader("📝 Input Data Manual")
 
-        # Cek apakah semua kolom yang diperlukan ada
-        expected_features = X.columns.tolist()
-        if hasattr(model, 'feature_names_in_'):
-            missing_cols = [col for col in model.feature_names_in_ if col not in X.columns]
-            if missing_cols:
-                st.error(f"❌ Data kurang kolom: {missing_cols}")
-                st.stop()
-            # Urutkan kolom biar sama
-            X = X[model.feature_names_in_]
+    with open('data_cleaned_columns.json', 'r') as f:
+        expected_columns = json.load(f)
 
-        # Prediksi
-        st.subheader("🔍 Hasil Prediksi")
-        probs = model.predict_proba(X)
+    manual_data = {}
+    for col in expected_columns:
+        manual_data[col] = st.sidebar.number_input(f"{col}", value=0.0)
+    data = pd.DataFrame([manual_data])
+    st.success("✅ Data manual siap diprediksi!")
+
+else:
+    st.info("Silakan upload file CSV atau isi data manual di sidebar.")
+
+if data is not None:
+
+    st.subheader("📄 Data Input")
+    st.dataframe(data)
+
+    # --- Check Column Names ---
+    with open('data_cleaned_columns.json', 'r') as f:
+        expected_columns = json.load(f)
+
+    if list(data.columns) != expected_columns:
+        st.error("❌ Kolom dalam data tidak sesuai dengan model yang dilatih.")
+        st.write("Diharapkan kolom:", expected_columns)
+        st.stop()
+
+    # --- Prediksi ---
+    with st.spinner('🔍 Sedang melakukan prediksi...'):
+        probs = model.predict_proba(data)
 
         def classify(prob):
             if prob[0] >= dropout_threshold:
-                return "Dropout"
+                return "Dropout", prob[0]*100
             elif prob[1] >= enrolled_threshold:
-                return "Enrolled"
+                return "Enrolled", prob[1]*100
             else:
-                return "Graduate"
+                return "Graduate", prob[2]*100
 
-        predictions = [classify(p) for p in probs]
+        preds_conf = [classify(p) for p in probs]
+        preds = [p[0] for p in preds_conf]
+        confs = [p[1] for p in preds_conf]
+
         result_df = data.copy()
-        result_df['Attrition_Prediction'] = predictions
+        result_df['Attrition_Prediction'] = preds
+        result_df['Confidence (%)'] = np.round(confs, 2)
 
-        st.dataframe(result_df)
+        st.subheader("🔍 Hasil Prediksi")
+        st.dataframe(result_df.style.apply(highlight_prediction, axis=1))
 
-        # Visualisasi
-        st.subheader("📊 Distribusi Hasil Prediksi")
+        # --- Pie Chart ---
+        st.subheader("📊 Distribusi Prediksi")
         fig, ax = plt.subplots()
         result_df['Attrition_Prediction'].value_counts().plot.pie(
-            autopct='%1.1f%%', ax=ax, startangle=90, colors=['#FF9999','#99FF99','#CCCCFF'])
+            autopct='%1.1f%%', ax=ax, startangle=90,
+            colors=['#FF9999', '#99FF99', '#CCCCFF']
+        )
         ax.set_ylabel('')
         st.pyplot(fig)
 
-        # Download hasil
+        # --- Download Hasil ---
         st.subheader("⬇️ Download Hasil Prediksi")
         csv = result_df.to_csv(index=False).encode('utf-8')
         st.download_button(
@@ -82,7 +122,3 @@ if uploaded_file is not None:
             file_name='hasil_prediksi_attrition.csv',
             mime='text/csv'
         )
-    except Exception as e:
-        st.error(f"Terjadi kesalahan saat memproses file: {e}")
-else:
-    st.info("Silakan upload file CSV untuk memulai prediksi.")

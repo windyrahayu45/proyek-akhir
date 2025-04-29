@@ -31,9 +31,15 @@ if uploaded_file is not None:
         st.subheader("📄 Data yang Diupload")
         st.dataframe(data)
 
+        # Drop kolom 'status' kalau ada
+        if 'status' in data.columns:
+            X = data.drop(columns=['status'])
+        else:
+            X = data.copy()
+
         # Prediksi
         st.subheader("🔍 Hasil Prediksi")
-        probs = model.predict_proba(data)  # probs shape (n_samples, 3)
+        probs = model.predict_proba(X)
 
         def classify(prob):
             if prob[0] >= dropout_threshold:

@@ -6,7 +6,7 @@ import json
 import matplotlib.pyplot as plt
 
 # Judul
-st.set_page_config(page_title="Prediksi Attrition Mahasiswa")
+st.set_page_config(page_title="Prediksi Attrition Mahasiswa", page_icon="🎓")
 st.title("🎓 Prediksi Attrition Mahasiswa - Jaya Jaya Institut")
 st.write("Upload data mahasiswa untuk memprediksi kemungkinan dropout berdasarkan model machine learning yang telah dilatih.")
 
@@ -36,6 +36,16 @@ if uploaded_file is not None:
             X = data.drop(columns=['status'])
         else:
             X = data.copy()
+
+        # Cek apakah semua kolom yang diperlukan ada
+        expected_features = X.columns.tolist()
+        if hasattr(model, 'feature_names_in_'):
+            missing_cols = [col for col in model.feature_names_in_ if col not in X.columns]
+            if missing_cols:
+                st.error(f"❌ Data kurang kolom: {missing_cols}")
+                st.stop()
+            # Urutkan kolom biar sama
+            X = X[model.feature_names_in_]
 
         # Prediksi
         st.subheader("🔍 Hasil Prediksi")

@@ -72,7 +72,7 @@ if data is not None:
     st.dataframe(data)
 
     # --- Check Column Names ---
-    with open('data_cleaned_columns.json', 'r') as f:
+    with open('data/data_cleaned_columns.json', 'r') as f:
         expected_columns = json.load(f)
 
     if list(data.columns) != expected_columns:

@@ -1,0 +1,8 @@
+feature,correlation
+admission_grade,-0.25
+age_at_enrollment,0.12
+curricular_units_1st_sem_grade,-0.41
+curricular_units_2nd_sem_grade,-0.39
+unemployment_rate,0.05
+inflation_rate,0.01
+gdp,-0.18

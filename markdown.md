@@ -1,12 +1,12 @@
 # Proyek Akhir: Menyelesaikan Permasalahan Jaya Jaya Institute
 
 ##  1. Business Understanding
-Jaya Jaya Institut adalah sebuah lembaga pendidikan (edutech) yang berfokus pada penyediaan program pendidikan tinggi dan kursus pelatihan profesional. Tantangan utama yang dihadapi oleh institut ini adalah meningkatkan tingkat kelulusan dan mempertahankan mahasiswa agar tidak drop-out di tengah studi mereka.
+Jaya Jaya Institut adalah sebuah lembaga pendidikan  yang berfokus pada penyediaan program pendidikan tinggi dan kursus pelatihan profesional. Tantangan utama yang dihadapi oleh institut ini adalah meningkatkan tingkat kelulusan dan mempertahankan mahasiswa agar tidak drop-out di tengah studi mereka.
 
 ### Permasalahan Bisnis
 - Tingginya angka mahasiswa yang keluar (drop-out) sebelum menyelesaikan program.
 - Kurangnya sistem prediksi dini untuk mengidentifikasi mahasiswa berisiko tinggi.
-- Tidak adanya dashboard monitoring yang mudah digunakan untuk mengawasi attrition rate dan performa akademik mahasiswa.
+- Tidak adanya dashboard monitoring yang mudah digunakan untuk mengawasi dropout rate dan performa akademik mahasiswa.
 
 ### Cakupan Proyek
 - Melakukan analisis data historis mahasiswa.
@@ -57,7 +57,7 @@ docker cp metabase:/metabase.db/metabase.db.mv.db ./
 
 
 **Link prototype:** (contoh)  
-[Streamlit App Predict Attrition](https://proyek-akhir-windi.streamlit.app/)
+[Streamlit App Predict Dropout](https://proyek-akhir-windi.streamlit.app/)
 
 **Langkah penggunaan:**
 1. Buka link aplikasi.
@@ -66,14 +66,13 @@ docker cp metabase:/metabase.db/metabase.db.mv.db ./
 
 
 ## Conclusion
-Berdasarkan analisis dan modeling yang dilakukan, model Random Forest yang dibangun berhasil mencapai akurasi prediksi yang baik dalam mengidentifikasi mahasiswa yang berisiko drop-out. Dashboard bisnis yang dibuat juga memungkinkan pihak manajemen untuk melakukan monitoring attrition secara real-time.
+Berdasarkan analisis dan modeling yang dilakukan, model Random Forest yang dibangun berhasil mencapai akurasi prediksi yang baik dalam mengidentifikasi mahasiswa yang berisiko drop-out. Dashboard bisnis yang dibuat juga memungkinkan pihak manajemen untuk melakukan monitoring dropout secara real-time.
 
 Proyek ini memberikan solusi end-to-end mulai dari prediksi dini hingga visualisasi analitis, sehingga membantu Jaya Jaya Institut meningkatkan tingkat kelulusan dan mengurangi tingkat drop-out.
 
 ## Rekomendasi Action Items
 **Action item 1:**
-- Implementasi sistem monitoring rutin berbasis dashboard untuk analisa faktor risiko attrition setiap semester.
+- Implementasi sistem monitoring rutin berbasis dashboard untuk analisa faktor risiko dropout setiap semester.
 
 **Action item 2:**
 - Meluncurkan program intervensi akademik khusus untuk mahasiswa yang masuk dalam kategori "risiko tinggi" berdasarkan hasil prediksi machine learning.
-

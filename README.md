@@ -16,12 +16,27 @@ Jaya Jaya Institut adalah sebuah lembaga pendidikan  yang berfokus pada penyedia
 
 ### Persiapan
 **Sumber data:**
-- Dataset mahasiswa dari Jaya Jaya Institut, berisi informasi demografis, akademik, dan status kelulusan.
+- Dataset yang digunakan berasal dari repositori Dicoding Academy dan dapat diakses melalui tautan berikut:  
+[https://github.com/dicodingacademy/dicoding_dataset/blob/main/students_performance/data.csv](https://github.com/dicodingacademy/dicoding_dataset/blob/main/students_performance/data.csv)
+
+Dataset ini berisi informasi tentang performa siswa yang mencakup berbagai fitur seperti skor matematika, membaca, menulis, gender, status makan siang, dan latar belakang pendidikan orang tua.
 
 **Setup environment:**
-- Python 3.10+
-- Library utama: pandas, numpy, matplotlib, seaborn, scikit-learn, imbalanced-learn, streamlit, joblib
-- Deployment menggunakan Streamlit Community Cloud
+### 1. Versi Python
+- Python **3.10+**
+
+### 2. Instalasi Library
+Jalankan perintah berikut untuk menginstal semua dependensi:
+```bash
+pip install -r requirements.txt
+
+### 3. jalankan aplikasi streamlit
+streamlit run app/main.py
+
+### 4. membuka notebook
+jupyter notebook Notebook.ipynb
+
+
 
 ## 2. Business Dashboard
 Dashboard bisnis dibuat menggunakan Metabase, dengan visualisasi utama seperti:
@@ -56,7 +71,7 @@ docker cp metabase:/metabase.db/metabase.db.mv.db ./
 ---
 
 
-**Link prototype:** (contoh)  
+**Link prototype:**
 [Streamlit App Predict Dropout](https://proyek-akhir-windi.streamlit.app/)
 
 **Langkah penggunaan:**
@@ -65,14 +80,41 @@ docker cp metabase:/metabase.db/metabase.db.mv.db ./
 3. atau masukan data mahasiswa sesuai dengan form yang telah disediakan
 
 
-## Conclusion
-Berdasarkan analisis dan modeling yang dilakukan, model Random Forest yang dibangun berhasil mencapai akurasi prediksi yang baik dalam mengidentifikasi mahasiswa yang berisiko drop-out. Dashboard bisnis yang dibuat juga memungkinkan pihak manajemen untuk melakukan monitoring dropout secara real-time.
+##  Conclusion
+Berdasarkan hasil analisis data dan pemodelan machine learning terhadap data mahasiswa Jaya Jaya Institut, ditemukan bahwa kemungkinan mahasiswa mengalami dropout sangat dipengaruhi oleh performa akademik, kepatuhan terhadap administrasi keuangan, serta latar belakang pendidikan sebelumnya.
 
-Proyek ini memberikan solusi end-to-end mulai dari prediksi dini hingga visualisasi analitis, sehingga membantu Jaya Jaya Institut meningkatkan tingkat kelulusan dan mengurangi tingkat drop-out.
+Berikut adalah **10 fitur terpenting** yang paling memengaruhi risiko dropout:
+1. **curricular_units_2nd_sem_approved** – Jumlah mata kuliah semester 2 yang disetujui
+2. **curricular_units_1st_sem_approved** – Jumlah mata kuliah semester 1 yang disetujui
+3. **tuition_fees_up_to_date** – Status pembayaran biaya kuliah
+4. **curricular_units_2nd_sem_grade** – Nilai rata-rata semester 2
+5. **curricular_units_1st_sem_grade** – Nilai rata-rata semester 1
+6. **admission_grade** – Nilai saat masuk perguruan tinggi
+7. **previous_qualification_grade** – Nilai pendidikan sebelumnya
+8. **course** – Program studi yang diambil
+9. **curricular_units_2nd_sem_evaluations** – Jumlah evaluasi pada semester 2
+10. **gdp** – Indikator kondisi ekonomi (kemungkinan berasal dari data eksternal)
 
-## Rekomendasi Action Items
-**Action item 1:**
-- Implementasi sistem monitoring rutin berbasis dashboard untuk analisa faktor risiko dropout setiap semester.
+Secara umum, mahasiswa yang:
+- Memiliki performa rendah dalam perkuliahan (nilai dan mata kuliah tidak disetujui),
+- Menunggak biaya kuliah,
+- Berasal dari latar belakang akademik lemah,
+- Dan berasal dari program studi tertentu,
+memiliki risiko lebih tinggi untuk mengalami dropout.
 
-**Action item 2:**
-- Meluncurkan program intervensi akademik khusus untuk mahasiswa yang masuk dalam kategori "risiko tinggi" berdasarkan hasil prediksi machine learning.
+##  Rekomendasi Action Items
+
+**1. Bangun sistem pemantauan risiko dropout berbasis machine learning**  
+Gunakan model prediktif yang memanfaatkan fitur penting seperti nilai akademik, status pembayaran, dan latar belakang pendidikan untuk memantau risiko dropout sejak semester awal.
+
+**2. Sediakan program remedial untuk mahasiswa dengan performa rendah**  
+Tawarkan dukungan akademik berupa kelas tambahan atau tutor untuk mahasiswa yang gagal dalam banyak mata kuliah atau memiliki nilai rendah di semester awal.
+
+**3. Evaluasi sistem keuangan dan fasilitasi bantuan biaya kuliah**  
+Tinjau kembali kebijakan pembayaran kuliah, termasuk opsi cicilan dan beasiswa bagi mahasiswa yang kesulitan finansial, mengingat keterlambatan pembayaran menjadi indikator dropout.
+
+**4. Tinjau kurikulum dan tingkat kesulitan program studi tertentu**  
+Analisis lebih lanjut terhadap program studi yang menyumbang angka dropout tertinggi untuk mengidentifikasi potensi beban akademik yang tidak seimbang.
+
+**5. Gunakan evaluasi semester sebagai indikator intervensi cepat**  
+Perhatikan jumlah evaluasi dan hasil akademik mahasiswa secara berkelanjutan, terutama pada semester kedua, untuk mengambil tindakan preventif lebih awal.

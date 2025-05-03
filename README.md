@@ -29,6 +29,7 @@ Dataset ini berisi informasi tentang performa siswa yang mencakup berbagai fitur
 Jalankan perintah berikut untuk menginstal semua dependensi:
 ```bash
 pip install -r requirements.txt
+` ``` `
 
 - 3. jalankan aplikasi streamlit
 streamlit run app/main.py

@@ -17,7 +17,7 @@ Jaya Jaya Institut adalah sebuah lembaga pendidikan  yang berfokus pada penyedia
 ### Persiapan
 **Sumber data:**
 - Dataset yang digunakan berasal dari repositori Dicoding Academy dan dapat diakses melalui tautan berikut:  
-[https://github.com/dicodingacademy/dicoding_dataset/blob/main/students_performance/data.csv](https://github.com/dicodingacademy/dicoding_dataset/blob/main/students_performance/data.csv)
+Dicoding dataset(https://github.com/dicodingacademy/dicoding_dataset/blob/main/students_performance/data.csv)
 
 Dataset ini berisi informasi tentang performa siswa yang mencakup berbagai fitur seperti skor matematika, membaca, menulis, gender, status makan siang, dan latar belakang pendidikan orang tua.
 

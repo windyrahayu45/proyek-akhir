@@ -22,21 +22,14 @@ Jaya Jaya Institut adalah sebuah lembaga pendidikan  yang berfokus pada penyedia
 Dataset ini berisi informasi tentang performa siswa yang mencakup berbagai fitur seperti skor matematika, membaca, menulis, gender, status makan siang, dan latar belakang pendidikan orang tua.
 
 **Setup environment:**
-- Versi Python
-  Python **3.10+**
-
-- Instalasi Library
-Jalankan perintah berikut untuk menginstal semua dependensi:
-```bash
+# Versi Python
+python --version  # Python 3.10+
+# Instalasi Library
 pip install -r requirements.txt
-` ``` `
-
-- 3. jalankan aplikasi streamlit
+# Jalankan Aplikasi Streamlit
 streamlit run app/main.py
-
-- 4. membuka notebook
+# Membuka Notebook
 jupyter notebook Notebook.ipynb
-
 
 
 ## 2. Business Dashboard
